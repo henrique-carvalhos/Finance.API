@@ -1,4 +1,11 @@
+using Finance.Application;
+using Finance.Infrastructure;
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services
+    .AddApplication()
+    .AddInfrastructure(builder.Configuration);
 
 // Add services to the container.
 

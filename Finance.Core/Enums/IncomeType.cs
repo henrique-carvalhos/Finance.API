@@ -1,4 +1,4 @@
-﻿namespace Finance.API.Enums
+﻿namespace Finance.Core.Enums
 {
     public enum IncomeType
     {
