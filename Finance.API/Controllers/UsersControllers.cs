@@ -5,6 +5,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Finance.Core.Entities;
+using Finance.Application.Queries.GetAllUser;
 
 namespace Finance.API.Controllers
 {
@@ -37,17 +38,13 @@ namespace Finance.API.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get(string search = "")
+        public async Task<IActionResult> Get(string search = "")
         {
-            var users = _context.Users
-                .Include(i => i.Incomes)
-                .Include(e => e.Expenses)
-                .Where(u => search == "" || u.Name.Contains(search))
-                .ToList();
+            var query = new GetAllUserQuery(search);
 
-            var model = users.Select(UserViewModel.FromEntity).ToList();
+            var result = await _mediator.Send(query);
 
-            return Ok(model);
+            return Ok(result);
         }
 
         [HttpPost]

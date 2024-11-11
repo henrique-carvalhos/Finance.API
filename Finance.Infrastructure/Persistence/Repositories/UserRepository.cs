@@ -22,9 +22,15 @@ namespace Finance.Infrastructure.Persistence.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<List<User>> GetAll()
+        public async Task<List<User>> GetAll(string search)
         {
-            throw new NotImplementedException();
+            var users =  await _context.Users
+                .Include(i => i.Incomes)
+                .Include(e => e.Expenses)
+                .Where(u => search == "" || u.Name.Contains(search))
+                .ToListAsync();
+
+            return users;
         }
 
         public async Task<User?> GetbyId(int id)
