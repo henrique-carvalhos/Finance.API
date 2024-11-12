@@ -1,4 +1,7 @@
-﻿using Finance.Application.Models;
+﻿using Finance.Application.Commands.CreateIncome;
+using Finance.Application.Models;
+using Finance.Application.Queries.GetAllIncome;
+using Finance.Application.Queries.GetAllUser;
 using Finance.Application.Queries.GetIncomeById;
 using Finance.Application.Queries.GetUserById;
 using Finance.Core.Entities;
@@ -39,27 +42,21 @@ namespace Finance.API.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get(string search = "")
+        public async Task<IActionResult> Get(string search = "")
         {
-            var incomes = _context.Incomes
-                .Include(i => i.User)
-                .Where(u => search == "" || u.Description.Contains(search))
-                .ToList();
+            var query = new GetAllIncomeQuery(search);
 
-            var model = incomes.Select(IncomeViewModel.FromEntity).ToList();
+            var result = await _mediator.Send(query);
 
-            return Ok(model);
+            return Ok(result);
         }
 
         [HttpPost]
-        public IActionResult Post(CreateIncomeInputModel model)
+        public async Task<IActionResult> Post(CreateIncomeCommand command)
         {
-            var income = new Income(model.Description, model.Amount, model.Date, model.IncomeType, model.IdUser);
+            var result = await _mediator.Send(command);
 
-            _context.Incomes.Add(income);
-            _context.SaveChanges();
-
-            return NoContent();
+            return CreatedAtAction(nameof(GetById), new {id = result.Data}, command);
         }
 
         [HttpDelete("{id}")]

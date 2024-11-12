@@ -6,8 +6,7 @@ namespace Finance.Core.Repositories
     {
         Task<Income?> GetById(int id);
         Task<List<Income>> GetAll(string search);
-        Task<int> Add(Income inocome);
+        Task<int> Add(Income income);
         Task Update(Income income);
-        Task Delete(int id);
     }
 }

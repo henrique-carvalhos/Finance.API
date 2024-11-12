@@ -20,11 +20,6 @@ namespace Finance.Infrastructure.Persistence.Repositories
             return user.Id;
         }
 
-        public Task Delete(int id)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<List<User>> GetAll(string search)
         {
             var users = await _context.Users

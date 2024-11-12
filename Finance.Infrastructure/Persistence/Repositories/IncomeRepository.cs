@@ -17,19 +17,20 @@ namespace Finance.Infrastructure.Persistence.Repositories
             _context = context;
         }
 
-        public Task<int> Add(Income inocome)
+        public async Task<int> Add(Income income)
         {
-            throw new NotImplementedException();
+            _context.Incomes.Add(income);
+            await _context.SaveChangesAsync();
+
+            return income.Id;
         }
 
-        public Task Delete(int id)
+        public async Task<List<Income>> GetAll(string search)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<List<Income>> GetAll(string search)
-        {
-            throw new NotImplementedException();
+            return await _context.Incomes
+                .Include(i => i.User)
+                .Where(u => search == "" || u.Description.Contains(search))
+                .ToListAsync();
         }
 
         public async Task<Income?> GetById(int id)

@@ -8,6 +8,5 @@ namespace Finance.Core.Repositories
         Task<List<User>> GetAll(string search);
         Task<int> Add(User user);
         Task Update(User user);
-        Task Delete(int id);
     }
 }
