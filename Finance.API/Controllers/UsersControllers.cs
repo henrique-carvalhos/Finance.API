@@ -1,12 +1,10 @@
-﻿using Finance.Application.Models;
-using Finance.Application.Queries.GetUserById;
-using Finance.Infrastructure.Persistence;
+﻿using Finance.Application.Queries.GetUserById;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Finance.Core.Entities;
 using Finance.Application.Queries.GetAllUser;
 using Finance.Application.Commands.CreateUser;
+using Finance.Application.Commands.UpdateUser;
+using Finance.Application.Commands.DeleteUser;
 
 namespace Finance.API.Controllers
 {
@@ -14,11 +12,9 @@ namespace Finance.API.Controllers
     [Route("api/users")]
     public class UsersControllers : ControllerBase
     {
-        private readonly FinanceDbContext _context;
         private readonly IMediator _mediator;
-        public UsersControllers(FinanceDbContext context, IMediator mediator)
+        public UsersControllers(IMediator mediator)
         {
-            _context = context;
             _mediator = mediator;
         }
 
@@ -57,36 +53,28 @@ namespace Finance.API.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            var user = _context.Users.SingleOrDefault(p => p.Id == id);
+            var result = await _mediator.Send(new DeleteUserCommand(id));
 
-            if (user is null)
+            if (!result.IsSuccess)
             {
-                return NotFound();
+                return BadRequest(result.Message);
             }
-
-            user.SetAsDeleted();
-            _context.Users.Update(user);
-            _context.SaveChanges();
 
             return NoContent();
         }
 
         [HttpPut]
-        public IActionResult Put(int id, UpdateUserInputModel model)
+        public async Task<IActionResult> Put(int id, UpdateUserCommand command)
         {
-            var user = _context.Users.SingleOrDefault(p => p.Id == id);
 
-            if (user is null)
+            var result = await _mediator.Send(command);
+
+            if (!result.IsSuccess)
             {
-                return NotFound();
+                return BadRequest(result.Message);
             }
-
-            user.Update(model.Name);
-
-            _context.Users.Update(user);
-            _context.SaveChanges();
 
             return NoContent();
         }

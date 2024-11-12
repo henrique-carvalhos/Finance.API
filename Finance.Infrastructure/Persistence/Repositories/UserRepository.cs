@@ -27,7 +27,7 @@ namespace Finance.Infrastructure.Persistence.Repositories
 
         public async Task<List<User>> GetAll(string search)
         {
-            var users =  await _context.Users
+            var users = await _context.Users
                 .Include(i => i.Incomes)
                 .Include(e => e.Expenses)
                 .Where(u => search == "" || u.Name.Contains(search))
@@ -44,9 +44,10 @@ namespace Finance.Infrastructure.Persistence.Repositories
                 .SingleOrDefaultAsync(x => x.Id == id);
         }
 
-        public Task Update(User user)
+        public async Task Update(User user)
         {
-            throw new NotImplementedException();
+            _context.Users.Update(user);
+            await _context.SaveChangesAsync();
         }
     }
 }

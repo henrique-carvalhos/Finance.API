@@ -4,14 +4,16 @@ namespace Finance.Application.Models
 {
     public class UserViewModel
     {
-        public UserViewModel(string name, List<string> incomes, List<string> expenses)
+        public UserViewModel(string name, bool isDeleted, List<string> incomes, List<string> expenses)
         {
             Name = name;
+            IsDeleted = isDeleted;
             Incomes = incomes;
             Expenses = expenses;
         }
 
         public string Name { get; private set; }
+        public bool IsDeleted { get; private set; }
         public List<string> Incomes { get; private set; }
         public List<string> Expenses { get; private set; }
 
@@ -21,7 +23,7 @@ namespace Finance.Application.Models
 
             var expenses = user.Expenses.Select(u => u.Description).ToList();
 
-            return new UserViewModel(user.Name, incomes, expenses);
+            return new UserViewModel(user.Name, user.IsDeleted,incomes, expenses);
         }
     }
 }

@@ -1,11 +1,6 @@
 ﻿using Finance.Application.Models;
 using Finance.Core.Repositories;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Finance.Application.Commands.CreateUser
 {
