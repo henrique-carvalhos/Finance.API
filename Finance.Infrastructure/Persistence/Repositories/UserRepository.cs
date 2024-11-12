@@ -12,9 +12,12 @@ namespace Finance.Infrastructure.Persistence.Repositories
             _context = context;
         }
 
-        public Task<int> Add(User user)
+        public async Task<int> Add(User user)
         {
-            throw new NotImplementedException();
+            await _context.Users.AddAsync(user);
+            _context.SaveChanges();
+
+            return user.Id;
         }
 
         public Task Delete(int id)

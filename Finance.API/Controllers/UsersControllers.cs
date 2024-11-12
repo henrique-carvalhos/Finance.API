@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Finance.Core.Entities;
 using Finance.Application.Queries.GetAllUser;
+using Finance.Application.Commands.CreateUser;
 
 namespace Finance.API.Controllers
 {
@@ -48,14 +49,11 @@ namespace Finance.API.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post(CreateUserInputModel model)
+        public async Task<IActionResult> Post(CreateUserCommand command)
         {
-            var user = new User(model.Name);
+            var result = await _mediator.Send(command);
 
-            _context.Users.Add(user);
-            _context.SaveChanges();
-
-            return NoContent();
+            return CreatedAtAction(nameof(GetById), new { id = result.Data }, command);
         }
 
         [HttpDelete("{id}")]
