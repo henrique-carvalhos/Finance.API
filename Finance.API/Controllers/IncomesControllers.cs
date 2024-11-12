@@ -1,7 +1,11 @@
 ﻿using Finance.Application.Models;
+using Finance.Application.Queries.GetIncomeById;
+using Finance.Application.Queries.GetUserById;
 using Finance.Core.Entities;
 using Finance.Core.Enums;
 using Finance.Infrastructure.Persistence;
+using MediatR;
+using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,27 +15,27 @@ namespace Finance.API.Controllers
     [Route("api/incomes")]
     public class IncomesControllers : ControllerBase
     {
+        private readonly IMediator _mediator;
         private readonly FinanceDbContext _context;
-        public IncomesControllers(FinanceDbContext context)
+        public IncomesControllers(FinanceDbContext context, IMediator mediator)
         {
             _context = context;
+            _mediator = mediator;
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetById(int id)
+        public async Task<IActionResult> GetById(int id)
         {
-            var income = _context.Incomes
-                .Include(i => i.User)
-                .SingleOrDefault(x => x.Id == id);
+            var query = new GetIncomeByIdQuery(id);
 
-            if (income is null)
+            var result = await _mediator.Send(query);
+
+            if (result is null)
             {
                 return NotFound();
             }
 
-            var model = IncomeViewModel.FromEntity(income);
-
-            return Ok(model);
+            return Ok(result);
         }
 
         [HttpGet]

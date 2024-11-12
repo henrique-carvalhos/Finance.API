@@ -30,6 +30,7 @@ namespace Finance.Infrastructure
         private static IServiceCollection AddRepositories(this IServiceCollection services)
         {
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IIncomeRepository, IncomeRepository>();
 
             return services;
         }
