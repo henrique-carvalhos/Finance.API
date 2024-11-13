@@ -68,7 +68,6 @@ namespace Finance.API.Controllers
         [HttpPut]
         public async Task<IActionResult> Put(int id, UpdateUserCommand command)
         {
-
             var result = await _mediator.Send(command);
 
             if (!result.IsSuccess)

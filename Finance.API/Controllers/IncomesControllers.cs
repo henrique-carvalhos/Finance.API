@@ -1,4 +1,5 @@
 ﻿using Finance.Application.Commands.CreateIncome;
+using Finance.Application.Commands.UpdateIncome;
 using Finance.Application.Models;
 using Finance.Application.Queries.GetAllIncome;
 using Finance.Application.Queries.GetAllUser;
@@ -77,19 +78,14 @@ namespace Finance.API.Controllers
         }
 
         [HttpPut]
-        public IActionResult Put(int id, UpdateIncomeInputModel model)
+        public async Task<IActionResult> Put(int id, UpdateIncomeCommand command)
         {
-            var income = _context.Incomes.SingleOrDefault(p => p.Id == id);
+            var result = await _mediator.Send(command);
 
-            if (income is null)
+            if (!result.IsSuccess)
             {
-                return NotFound();
+                return BadRequest(result.Message);
             }
-
-            income.Update(model.Description, model.Amount, model.Date, model.IncomeType, model.IdUser);
-
-            _context.Incomes.Update(income);
-            _context.SaveChanges();
 
             return NoContent();
         }

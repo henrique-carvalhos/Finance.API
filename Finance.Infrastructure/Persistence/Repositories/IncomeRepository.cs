@@ -40,9 +40,10 @@ namespace Finance.Infrastructure.Persistence.Repositories
                 .SingleOrDefaultAsync(x => x.Id == id);
         }
 
-        public Task Update(Income income)
+        public async Task Update(Income income)
         {
-            throw new NotImplementedException();
+            _context.Incomes.Update(income);
+            await _context.SaveChangesAsync();
         }
     }
 }
