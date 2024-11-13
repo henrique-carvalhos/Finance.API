@@ -1,6 +1,8 @@
 ﻿using Finance.Application.Models;
+using Finance.Application.Queries.GetExpenseCategoryById;
 using Finance.Core.Entities;
 using Finance.Infrastructure.Persistence;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Finance.API.Controllers
@@ -10,23 +12,26 @@ namespace Finance.API.Controllers
     public class ExpensesCategoriesControllers : ControllerBase
     {
         private readonly FinanceDbContext _context;
-        public ExpensesCategoriesControllers(FinanceDbContext context)
+        private readonly IMediator _mediator;
+        public ExpensesCategoriesControllers(FinanceDbContext context, IMediator mediator)
         {
             _context = context;
+            _mediator = mediator;
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetById(int id)
+        public async Task<IActionResult> GetById(int id)
         {
-            var category = _context.ExpensesCategories
-                .SingleOrDefault(x => x.Id == id);
+            var query = new GetExpenseCategoryByIdQuery(id);
 
-            if (category is null)
+            var result = await _mediator.Send(query);
+
+            if (result is null)
             {
                 return NotFound();
             }
 
-            return Ok(category);
+            return Ok(result);
         }
 
         [HttpGet]
