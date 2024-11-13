@@ -31,7 +31,7 @@ namespace Finance.Infrastructure
         {
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IIncomeRepository, IncomeRepository>();
-            services.AddScoped<IExpenseRepository, ExpenseRepository>();
+            services.AddScoped<IExpenseCategoryRepository, ExpenseCategoryRepository>();
 
             return services;
         }
