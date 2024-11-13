@@ -1,4 +1,5 @@
 ﻿using Finance.Application.Commands.CreateIncome;
+using Finance.Application.Commands.DeleteIncome;
 using Finance.Application.Commands.UpdateIncome;
 using Finance.Application.Models;
 using Finance.Application.Queries.GetAllIncome;
@@ -61,19 +62,15 @@ namespace Finance.API.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            var income = _context.Incomes.SingleOrDefault(p => p.Id == id);
+            var result = await _mediator.Send(new DeleteIncomeCommand(id));
 
-            if (income is null)
+            if (!result.IsSuccess)
             {
-                return NotFound();
+                return BadRequest(result.Message);
             }
-
-            income.SetAsDeleted();
-            _context.Incomes.Update(income);
-            _context.SaveChanges();
-
+;
             return NoContent();
         }
 
