@@ -1,18 +1,12 @@
 ﻿using Finance.Application.Commands.CreateIncome;
 using Finance.Application.Commands.DeleteIncome;
 using Finance.Application.Commands.UpdateIncome;
-using Finance.Application.Models;
 using Finance.Application.Queries.GetAllIncome;
-using Finance.Application.Queries.GetAllUser;
 using Finance.Application.Queries.GetIncomeById;
-using Finance.Application.Queries.GetUserById;
-using Finance.Core.Entities;
 using Finance.Core.Enums;
 using Finance.Infrastructure.Persistence;
 using MediatR;
-using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace Finance.API.Controllers
 {
@@ -21,10 +15,8 @@ namespace Finance.API.Controllers
     public class IncomesControllers : ControllerBase
     {
         private readonly IMediator _mediator;
-        private readonly FinanceDbContext _context;
-        public IncomesControllers(FinanceDbContext context, IMediator mediator)
+        public IncomesControllers(IMediator mediator)
         {
-            _context = context;
             _mediator = mediator;
         }
 
