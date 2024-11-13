@@ -1,4 +1,5 @@
 ﻿using Finance.Application.Models;
+using Finance.Application.Queries.GetAllExpenseCategory;
 using Finance.Application.Queries.GetExpenseCategoryById;
 using Finance.Core.Entities;
 using Finance.Infrastructure.Persistence;
@@ -35,13 +36,13 @@ namespace Finance.API.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get(string search = "")
+        public async Task<IActionResult> Get(string search = "")
         {
-            var category = _context.ExpensesCategories
-                .Where(u => search == "" || u.Name.Contains(search))
-                .ToList();
+            var query = new GetAllExpenseCategoryQuery(search);
 
-            return Ok(category);
+            var result = await _mediator.Send(query);
+            
+            return Ok(result);
         }
 
         [HttpPost]
