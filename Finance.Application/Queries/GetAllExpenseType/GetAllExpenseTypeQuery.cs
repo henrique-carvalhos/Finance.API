@@ -3,7 +3,7 @@ using MediatR;
 
 namespace Finance.Application.Queries.GetAllExpenseType
 {
-    public class GetAllExpenseTypeQuery
+    public class GetAllExpenseTypeQuery : IRequest<ResultViewModel<List<ExpenseTypeViewModel>>>
     {
         public GetAllExpenseTypeQuery(string search)
         {

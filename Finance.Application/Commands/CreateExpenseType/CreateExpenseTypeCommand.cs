@@ -1,14 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Finance.Application.Models;
+using Finance.Core.Entities;
+using MediatR;
 
 namespace Finance.Application.Commands.CreateExpenseType
 {
-    public class CreateExpenseTypeCommand
+    public class CreateExpenseTypeCommand : IRequest<ResultViewModel<int>>
     {
         public string Name { get; set; }
         public int IdExpenseCategory { get; set; }
+
+        public ExpenseType ToEntity()
+            => new (Name, IdExpenseCategory);
     }
 }
