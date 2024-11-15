@@ -1,4 +1,6 @@
-﻿using Finance.Application.Commands.UpdateExpenseCatetegory;
+﻿using Finance.Application.Commands.DeleteExpenseCategory;
+using Finance.Application.Commands.DeleteUser;
+using Finance.Application.Commands.UpdateExpenseCatetegory;
 using Finance.Application.Models;
 using Finance.Application.Queries.GetAllExpenseCategory;
 using Finance.Application.Queries.GetExpenseCategoryById;
@@ -58,18 +60,14 @@ namespace Finance.API.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            var category = _context.ExpensesCategories.SingleOrDefault(p => p.Id == id);
+            var result = await _mediator.Send(new DeleteExpenseCategoryCommand(id));
 
-            if (category is null)
+            if (!result.IsSuccess)
             {
-                return NotFound();
+                return BadRequest(result.Message);
             }
-
-            category.SetAsDeleted();
-            _context.ExpensesCategories.Update(category);
-            _context.SaveChanges();
 
             return NoContent();
         }
