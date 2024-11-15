@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Finance.Application.Models;
+using MediatR;
 
 namespace Finance.Application.Commands.DeleteExpenseType
 {
-    public class DeleteExpenseTypeCommand
+    public class DeleteExpenseTypeCommand : IRequest<ResultViewModel>
     {
         public DeleteExpenseTypeCommand(int id)
         {
