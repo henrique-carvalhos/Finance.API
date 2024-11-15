@@ -1,5 +1,4 @@
 ﻿using Finance.Application.Commands.DeleteExpenseCategory;
-using Finance.Application.Commands.DeleteUser;
 using Finance.Application.Commands.UpdateExpenseCatetegory;
 using Finance.Application.Models;
 using Finance.Application.Queries.GetAllExpenseCategory;
