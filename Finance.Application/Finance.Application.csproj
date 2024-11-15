@@ -15,4 +15,12 @@
     <PackageReference Include="MediatR" Version="12.4.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Commands\CreateExpenseType\" />
+    <Folder Include="Commands\DeleteExpenseType\" />
+    <Folder Include="Commands\UpdateExpenseType\" />
+    <Folder Include="Queries\GetExpenseTypeById\" />
+    <Folder Include="Queries\GetAllExpenseType\" />
+  </ItemGroup>
+
 </Project>
