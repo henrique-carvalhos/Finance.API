@@ -21,7 +21,6 @@ namespace Finance.API.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-
             var query = new GetUserByIdQuery(id);
 
             var result = await _mediator.Send(query);

@@ -1,6 +1,9 @@
-﻿using Finance.Application.Models;
-using Finance.Core.Entities;
-using Finance.Infrastructure.Persistence;
+﻿using Finance.Application.Commands.CreateExpenseType;
+using Finance.Application.Commands.DeleteExpenseType;
+using Finance.Application.Commands.UpdateExpenseType;
+using Finance.Application.Queries.GetAllExpenseType;
+using Finance.Application.Queries.GetExpenseTypeById;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Finance.API.Controllers
@@ -9,78 +12,67 @@ namespace Finance.API.Controllers
     [Route("api/expensesTypes")]
     public class ExpensesTypesControllers : ControllerBase
     {
-        private readonly FinanceDbContext _context;
-        public ExpensesTypesControllers(FinanceDbContext context)
+        private readonly IMediator _mediator;
+        public ExpensesTypesControllers(IMediator mediator)
         {
-            _context = context;
+            _mediator = mediator;
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetById(int id)
+        public async Task<IActionResult> GetById(int id)
         {
-            var type = _context.ExpensesTypes
-                .SingleOrDefault(x => x.Id == id);
+            var query = new GetExpenseTypeByIdQuery(id);
 
-            if (type is null)
+            var result = await _mediator.Send(query);
+
+            if (result is null)
             {
                 return NotFound();
             }
 
-            return Ok(type);
+            return Ok(result);
         }
 
         [HttpGet]
-        public IActionResult Get(string search = "")
+        public async Task<IActionResult> Get(string search = "")
         {
-            var type = _context.ExpensesTypes
-                .Where(u => search == "" || u.Name.Contains(search))
-                .ToList();
+            var query = new GetAllExpenseTypeQuery(search);
 
-            return Ok(type);
+            var result = await _mediator.Send(query);
+
+            return Ok(result); 
         }
 
         [HttpPost]
-        public IActionResult Post(CreateExpenseTypeInputModel model)
+        public async Task<IActionResult> Post(CreateExpenseTypeCommand command)
         {
-            var type = new ExpenseType(model.Name, model.IdExpenseCategory);
+            var result = await _mediator.Send(command);
 
-            _context.ExpensesTypes.Add(type);
-            _context.SaveChanges();
-
-            return NoContent();
+            return CreatedAtAction(nameof(GetById), new {id = result.Data } ,command);
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            var type = _context.ExpensesTypes.SingleOrDefault(p => p.Id == id);
+            var result = await _mediator.Send(new DeleteExpenseTypeCommand(id));
 
-            if (type is null)
+            if (!result.IsSuccess)
             {
-                return NotFound();
+                return BadRequest(result.Message);
             }
 
-            type.SetAsDeleted();
-            _context.ExpensesTypes.Update(type);
-            _context.SaveChanges();
-
-            return NoContent();
+            return  NoContent();
         }
 
         [HttpPut]
-        public IActionResult Put(int id, UpdateExpenseTypeInputModel model)
+        public async Task<IActionResult> Put(int id, UpdateExpenseTypeCommand command)
         {
-            var type = _context.ExpensesTypes.SingleOrDefault(p => p.Id == id);
+            var result = _mediator.Send(command);
 
-            if (type is null)
+            if (!result.IsSuccess)
             {
-                return NotFound();
+                return BadRequest(Request.Message);
             }
-
-            type.Update(model.Name, model.IdExpenseCategory);
-
-            _context.ExpensesTypes.Update(type);
-            _context.SaveChanges();
 
             return NoContent();
         }
