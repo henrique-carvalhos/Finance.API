@@ -1,10 +1,8 @@
-﻿using Finance.Application.Commands.DeleteExpenseCategory;
+﻿using Finance.Application.Commands.CreateExpenseCategory;
+using Finance.Application.Commands.DeleteExpenseCategory;
 using Finance.Application.Commands.UpdateExpenseCatetegory;
-using Finance.Application.Models;
 using Finance.Application.Queries.GetAllExpenseCategory;
 using Finance.Application.Queries.GetExpenseCategoryById;
-using Finance.Core.Entities;
-using Finance.Infrastructure.Persistence;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,11 +12,9 @@ namespace Finance.API.Controllers
     [Route("api/expensesCategories")]
     public class ExpensesCategoriesControllers : ControllerBase
     {
-        private readonly FinanceDbContext _context;
         private readonly IMediator _mediator;
-        public ExpensesCategoriesControllers(FinanceDbContext context, IMediator mediator)
+        public ExpensesCategoriesControllers(IMediator mediator)
         {
-            _context = context;
             _mediator = mediator;
         }
 
@@ -48,14 +44,11 @@ namespace Finance.API.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post(CreateExpenseCategoryInputModel model)
+        public async Task<IActionResult> Post(CreateExpenseCategoryCommand command)
         {
-            var category = new ExpenseCategory(model.Name);
+            var result = await _mediator.Send(command);
 
-            _context.ExpensesCategories.Add(category);
-            _context.SaveChanges();
-
-            return NoContent();
+            return CreatedAtAction(nameof(GetById), new { id = result.Data }, command);
         }
 
         [HttpDelete("{id}")]

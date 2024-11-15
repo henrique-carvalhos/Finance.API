@@ -14,7 +14,8 @@ namespace Finance.Infrastructure.Persistence.Repositories
 
         public async Task<int> Add(ExpenseCategory expenseCategory)
         {
-            await _context.ExpensesCategories.AddAsync(expenseCategory);
+            _context.ExpensesCategories.Add(expenseCategory);
+            await _context.SaveChangesAsync();
 
             return expenseCategory.Id;
         }
