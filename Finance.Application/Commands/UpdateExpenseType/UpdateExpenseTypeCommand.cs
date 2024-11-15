@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Finance.Application.Models;
+using MediatR;
 
 namespace Finance.Application.Commands.UpdateExpenseType
 {
-    public class UpdateExpenseTypeCommand
+    public class UpdateExpenseTypeCommand : IRequest<ResultViewModel>
     {
-        public int IdExpenseType { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
         public int IdExpenseCategory { get; set; }
     }

@@ -67,11 +67,11 @@ namespace Finance.API.Controllers
         [HttpPut]
         public async Task<IActionResult> Put(int id, UpdateExpenseTypeCommand command)
         {
-            var result = _mediator.Send(command);
+            var result = await _mediator.Send(command);
 
             if (!result.IsSuccess)
             {
-                return BadRequest(Request.Message);
+                return BadRequest(result.Message);
             }
 
             return NoContent();
