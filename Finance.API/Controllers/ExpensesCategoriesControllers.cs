@@ -1,4 +1,5 @@
-﻿using Finance.Application.Models;
+﻿using Finance.Application.Commands.UpdateExpenseCatetegory;
+using Finance.Application.Models;
 using Finance.Application.Queries.GetAllExpenseCategory;
 using Finance.Application.Queries.GetExpenseCategoryById;
 using Finance.Core.Entities;
@@ -41,7 +42,7 @@ namespace Finance.API.Controllers
             var query = new GetAllExpenseCategoryQuery(search);
 
             var result = await _mediator.Send(query);
-            
+
             return Ok(result);
         }
 
@@ -74,19 +75,14 @@ namespace Finance.API.Controllers
         }
 
         [HttpPut]
-        public IActionResult Put(int id, UpdateExpenseCategoryInputModel model)
+        public async Task<IActionResult> Put(int id, UpdateExpenseCategoryCommand command)
         {
-            var category = _context.ExpensesCategories.SingleOrDefault(p => p.Id == id);
+            var result = await _mediator.Send(command);
 
-            if (category is null)
+            if (!result.IsSuccess)
             {
-                return NotFound();
+                return BadRequest(result.Message);
             }
-
-            category.Update(model.Name);
-
-            _context.ExpensesCategories.Update(category);
-            _context.SaveChanges();
 
             return NoContent();
         }
