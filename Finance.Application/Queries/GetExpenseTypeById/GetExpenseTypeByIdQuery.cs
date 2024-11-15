@@ -1,6 +1,9 @@
-﻿namespace Finance.Application.Queries.GetExpenseTypeById
+﻿using Finance.Application.Models;
+using MediatR;
+
+namespace Finance.Application.Queries.GetExpenseTypeById
 {
-    public class GetExpenseTypeByIdQuery
+    public class GetExpenseTypeByIdQuery : IRequest<ResultViewModel<ExpenseTypeViewModel>>
     {
         public GetExpenseTypeByIdQuery(int id)
         {
