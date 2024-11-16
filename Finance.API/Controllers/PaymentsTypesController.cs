@@ -1,4 +1,6 @@
 ﻿using Finance.Application.Commands.CreatePaymentType;
+using Finance.Application.Commands.DeleteIncome;
+using Finance.Application.Commands.DeletePaymentType;
 using Finance.Application.Commands.UpdatePaymentType;
 using Finance.Application.Queries.GetAllPaymentType;
 using Finance.Application.Queries.GetPaymentTypeById;
@@ -63,5 +65,17 @@ namespace Finance.API.Controllers
             return NoContent();
         }
 
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var result = await _mediator.Send(new DeletePaymentTypeCommand(id));
+
+            if (!result.IsSuccess)
+            {
+                return BadRequest(result.Message);
+            }
+;
+            return NoContent();
+        }
     }
 }
