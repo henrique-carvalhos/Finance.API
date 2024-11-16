@@ -1,5 +1,6 @@
 ﻿using Finance.Core.Entities;
 using Finance.Core.Repositories;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,30 +11,39 @@ namespace Finance.Infrastructure.Persistence.Repositories
 {
     public class PaymentTypeRepository : IPaymentTypeRepository
     {
-        private readonly IPaymentTypeRepository _repository;
-        public PaymentTypeRepository(IPaymentTypeRepository repository)
+        private readonly FinanceDbContext _context;
+        public PaymentTypeRepository(FinanceDbContext context)
         {
-            _repository = repository;
+            _context = context; 
         }
 
-        public Task<int> Add(PaymentType payment)
+        public async Task<int> Add(PaymentType payment)
         {
-            throw new NotImplementedException();
+            _context.Add(payment);
+            await _context.SaveChangesAsync();
+
+            return payment.Id;
         }
 
-        public Task<List<PaymentType>> GetAll(string search)
+        public async Task<List<PaymentType>> GetAll(string search)
         {
-            throw new NotImplementedException();
+            var payment = await _context.PaymentTypes
+                .Where(u => search == "" || u.Description.Contains(search))
+                .ToListAsync();
+
+            return payment;
         }
 
-        public Task<PaymentType?> GetById(int id)
+        public async Task<PaymentType?> GetById(int id)
         {
-            throw new NotImplementedException();
+            return await _context.PaymentTypes
+                .SingleOrDefaultAsync(x => x.Id == id);
         }
 
-        public Task Update(PaymentType payment)
+        public async Task Update(PaymentType payment)
         {
-            throw new NotImplementedException();
+            _context.Update(payment);
+            await _context.SaveChangesAsync();
         }
     }
 }
