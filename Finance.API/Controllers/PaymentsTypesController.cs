@@ -1,4 +1,4 @@
-﻿using Finance.Application.Models;
+﻿using Finance.Application.Commands.CreatePaymentType;
 using Finance.Infrastructure.Persistence;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -28,14 +28,11 @@ namespace Finance.API.Controllers
 
 
         [HttpPost]
-        public IActionResult Post(CreatePaymentTypeInputModel model)
+        public async Task<IActionResult> Post(CreatePaymentTypeCommand command)
         {
-            var payment = model.ToEntity();
-
-            _context.PaymentTypes.Add(payment);
-            _context.SaveChanges();
-
-            return CreatedAtAction(nameof(GetById), new { id = 1 }, model);
+            var result = await _mediator.Send(command);
+            
+            return CreatedAtAction(nameof(GetById), new { id = result.Data }, command);
         }
     }
 }
