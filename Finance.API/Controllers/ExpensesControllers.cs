@@ -1,4 +1,5 @@
 ﻿using Finance.Application.Models;
+using Finance.Application.Queries.GetAllExpense;
 using Finance.Application.Queries.GetExpenseById;
 using Finance.Infrastructure.Persistence;
 using MediatR;
@@ -20,11 +21,11 @@ namespace Finance.API.Controllers
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetById(int id)
+        public async Task<IActionResult> GetById(int id)
         {
             var expense = new GetExpenseByIdQuery(id);
 
-            var result = _mediator.Send(expense);
+            var result = await _mediator.Send(expense);
 
             if (expense is null)
             {
@@ -35,22 +36,17 @@ namespace Finance.API.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get(string search = "")
+        public async Task<IActionResult> Get(string search = "")
         {
-            var expenses = _context.Expenses
-                .Include(u => u.User)
-                .Include(e => e.ExpenseCategory)
-                .Include(e => e.ExpenseType)
-                .Where(u => !u.IsDeleted &&(search == "" || u.Description.Contains(search)))
-                .ToList();
+            var expense = new GetAllExpenseQuery(search);
 
-            var model = expenses.Select(ExpenseViewModel.FromEntity).ToList();
+            var result = await _mediator.Send(expense);
 
-            return Ok(model);
+            return Ok(result);
         }
 
         [HttpPost]
-        public IActionResult Post(CreateExpenseInputModel model)
+        public async Task<IActionResult> Post(CreateExpenseInputModel model)
         {
             var expense = model.ToEntity();
 
@@ -61,7 +57,7 @@ namespace Finance.API.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             var expense = _context.Expenses.SingleOrDefault(p => p.Id == id);
 
@@ -78,7 +74,7 @@ namespace Finance.API.Controllers
         }
 
         [HttpPut]
-        public IActionResult Put(int id, UpdateExpenseInputModel model)
+        public async Task<IActionResult> Put(int id, UpdateExpenseInputModel model)
         {
             var expense = _context.Expenses.SingleOrDefault(p => p.Id == id);
 
