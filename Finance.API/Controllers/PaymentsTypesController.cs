@@ -1,5 +1,4 @@
 ﻿using Finance.Application.Commands.CreatePaymentType;
-using Finance.Application.Commands.DeleteIncome;
 using Finance.Application.Commands.DeletePaymentType;
 using Finance.Application.Commands.UpdatePaymentType;
 using Finance.Application.Queries.GetAllPaymentType;
