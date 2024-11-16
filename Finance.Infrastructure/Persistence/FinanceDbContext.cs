@@ -26,12 +26,14 @@ namespace Finance.Infrastructure.Persistence
             builder.Entity<User>()
                 .HasMany(u => u.Incomes)
                 .WithOne(i => i.User)
-                .HasForeignKey(i => i.IdUser);
+                .HasForeignKey(i => i.IdUser)
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder.Entity<User>()
                 .HasMany(u => u.Expenses)
                 .WithOne(e => e.User)
-                .HasForeignKey(e => e.IdUser);
+                .HasForeignKey(e => e.IdUser)
+                .OnDelete(DeleteBehavior.Restrict);
 
             // Configuração da entidade Income
             builder.Entity<Income>()
@@ -62,17 +64,20 @@ namespace Finance.Infrastructure.Persistence
             builder.Entity<Expense>()
                 .HasOne(e => e.ExpenseCategory)
                 .WithMany()
-                .HasForeignKey(e => e.IdExpenseCategory);
+                .HasForeignKey(e => e.IdExpenseCategory)
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder.Entity<Expense>()
                 .HasOne(e => e.ExpenseType)
                 .WithMany()
-                .HasForeignKey(e => e.IdExpenseType);
+                .HasForeignKey(e => e.IdExpenseType)
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder.Entity<Expense>()
                 .HasOne(e => e.PaymentType)
                 .WithMany()
-                .HasForeignKey(e => e.IdPaymentType);
+                .HasForeignKey(e => e.IdPaymentType)
+                .OnDelete(DeleteBehavior.Restrict);
 
             // Configuração da entidade ExpenseCategory
             builder.Entity<ExpenseCategory>()
@@ -81,12 +86,13 @@ namespace Finance.Infrastructure.Persistence
             builder.Entity<ExpenseCategory>()
                 .Property(ec => ec.Name)
                 .IsRequired()
-            .HasMaxLength(50);
+                .HasMaxLength(50);
 
             builder.Entity<ExpenseCategory>()
                 .HasMany(ec => ec.ExpensesTypes)
                 .WithOne(et => et.ExpenseCategory)
-                .HasForeignKey(et => et.IdExpenseCategory);
+                .HasForeignKey(et => et.IdExpenseCategory)
+                .OnDelete(DeleteBehavior.Restrict);
 
             // Configuração da entidade ExpenseType
             builder.Entity<ExpenseType>()
@@ -100,7 +106,8 @@ namespace Finance.Infrastructure.Persistence
             builder.Entity<ExpenseType>()
                 .HasOne(et => et.ExpenseCategory)
                 .WithMany(ec => ec.ExpensesTypes)
-                .HasForeignKey(et => et.IdExpenseCategory);
+                .HasForeignKey(et => et.IdExpenseCategory)
+                .OnDelete(DeleteBehavior.Restrict);
 
 
             //configuração da entidade PaymentType

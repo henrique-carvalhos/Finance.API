@@ -20,9 +20,9 @@ namespace Finance.Infrastructure
 
         private static IServiceCollection AddData(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<FinanceDbContext>(o => o.UseInMemoryDatabase("FinanceDb"));
+            //services.AddDbContext<FinanceDbContext>(o => o.UseInMemoryDatabase("FinanceDb"));
             var connectionString = configuration.GetConnectionString("FinanceCs");
-            //builder.Services.AddDbContext<FinanceDbContext>(o => o.UseSqlServer(connectionString));
+            services.AddDbContext<FinanceDbContext>(o => o.UseSqlServer(connectionString));
 
 
             return services;
