@@ -1,4 +1,6 @@
-﻿namespace Finance.Application.Models
+﻿using Finance.Core.Enums;
+
+namespace Finance.Application.Models
 {
     public class UpdateExpenseInputModel
     {
@@ -6,6 +8,7 @@
         public string Description { get;  set; }
         public decimal Amount { get;  set; }
         public DateTime DateExpense { get;  set; }
+        public Card Card { get; set; }
 
         public int IdUser { get;  set; }
         public int IdExpenseCategory { get;  set; }

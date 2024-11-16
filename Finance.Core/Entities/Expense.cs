@@ -1,13 +1,16 @@
-﻿namespace Finance.Core.Entities
+﻿using Finance.Core.Enums;
+
+namespace Finance.Core.Entities
 {
     public class Expense : BaseEntity
     {
-        public Expense(string description, decimal amount, DateTime dateExpense, int idUser, int idExpenseCategory, int idExpenseType, int idPaymentType)
+        public Expense(string description, decimal amount, DateTime dateExpense, Card card,int idUser, int idExpenseCategory, int idExpenseType, int idPaymentType)
             : base()
         {
             Description = description;
             Amount = amount;
             DateExpense = dateExpense;
+            Card = card;
 
             IdUser = idUser;
             IdExpenseCategory = idExpenseCategory;
@@ -18,6 +21,7 @@
         public string Description { get; private set; }
         public decimal Amount { get; private set; }
         public DateTime DateExpense { get;  private set; }
+        public Card Card { get; private set; }
 
         public int IdUser { get; private set; }
         public User User { get; private set; }
@@ -31,11 +35,12 @@
         public int IdPaymentType { get; private set; }
         public PaymentType PaymentType { get; private set; }
 
-        public void Update(string description, decimal amount, DateTime dateExpense, int idUser, int idExpenseCategory, int idExpenseType, int idPaymentType)
+        public void Update(string description, decimal amount, DateTime dateExpense, Card card,int idUser, int idExpenseCategory, int idExpenseType, int idPaymentType)
         {
             Description = description;
             Amount = amount;
             DateExpense = dateExpense;
+            Card = card;
 
             IdUser = idUser;
             IdExpenseCategory = idExpenseCategory;
