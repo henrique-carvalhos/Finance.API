@@ -16,11 +16,9 @@ namespace Finance.API.Controllers
     [Route("api/expenses")]
     public class ExpensesControllers : ControllerBase
     {
-        private readonly FinanceDbContext _context;
         private readonly IMediator _mediator;
-        public ExpensesControllers(FinanceDbContext context, IMediator mediator)
+        public ExpensesControllers(IMediator mediator)
         {
-            _context = context;
             _mediator = mediator;
         }
 
@@ -31,12 +29,12 @@ namespace Finance.API.Controllers
 
             var result = await _mediator.Send(expense);
 
-            if (expense is null)
+            if (result is null)
             {
                 return NotFound();
             }
 
-            return Ok(expense);
+            return Ok(result);
         }
 
         [HttpGet]
