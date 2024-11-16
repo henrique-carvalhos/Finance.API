@@ -1,5 +1,7 @@
 ﻿using Finance.Application.Models;
+using Finance.Application.Queries.GetExpenseById;
 using Finance.Infrastructure.Persistence;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,28 +12,26 @@ namespace Finance.API.Controllers
     public class ExpensesControllers : ControllerBase
     {
         private readonly FinanceDbContext _context;
-        public ExpensesControllers(FinanceDbContext context)
+        private readonly IMediator _mediator;
+        public ExpensesControllers(FinanceDbContext context, IMediator mediator)
         {
             _context = context;
+            _mediator = mediator;
         }
 
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
-            var expense = _context.Expenses
-                .Include(u => u.User)
-                .Include(e => e.ExpenseCategory)
-                .Include(e => e.ExpenseType)
-                .SingleOrDefault(x => x.Id == id);
+            var expense = new GetExpenseByIdQuery(id);
+
+            var result = _mediator.Send(expense);
 
             if (expense is null)
             {
                 return NotFound();
             }
 
-            var model = ExpenseViewModel.FromEntity(expense);
-
-            return Ok(model);
+            return Ok(expense);
         }
 
         [HttpGet]
