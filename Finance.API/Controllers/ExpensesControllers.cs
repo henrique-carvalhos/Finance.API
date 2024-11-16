@@ -87,7 +87,7 @@ namespace Finance.API.Controllers
                 return NotFound();
             }
 
-            expense.Update(model.Description, model.Amount, model.DateExpense, model.IdUser, model.IdExpenseCategory, model.IdExpenseType);
+            expense.Update(model.Description, model.Amount, model.DateExpense, model.IdUser, model.IdExpenseCategory, model.IdExpenseType, model.IdPaymentType);
 
             _context.Expenses.Update(expense);
             _context.SaveChanges();

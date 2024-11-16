@@ -10,8 +10,9 @@ namespace Finance.Application.Models
         public int IdUser { get; set; }
         public int IdExpenseCategory { get; set; }
         public int IdExpenseType { get; set; }
+        public int IdPaymentType { get; set; }
 
         public Expense ToEntity()
-            => new(Description, Amount, DateExpense, IdUser, IdExpenseCategory, IdExpenseType);
+            => new(Description, Amount, DateExpense, IdUser, IdExpenseCategory, IdExpenseType, IdPaymentType);
     }
 }

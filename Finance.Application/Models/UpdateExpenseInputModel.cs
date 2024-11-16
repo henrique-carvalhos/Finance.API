@@ -10,5 +10,6 @@
         public int IdUser { get;  set; }
         public int IdExpenseCategory { get;  set; }
         public int IdExpenseType { get;  set; }
+        public int IdPaymentType { get; set; }
     }
 }
