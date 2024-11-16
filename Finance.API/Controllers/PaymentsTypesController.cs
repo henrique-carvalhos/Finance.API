@@ -1,4 +1,5 @@
 ﻿using Finance.Application.Commands.CreatePaymentType;
+using Finance.Application.Queries.GetAllPaymentType;
 using Finance.Application.Queries.GetPaymentTypeById;
 using Finance.Infrastructure.Persistence;
 using MediatR;
@@ -25,18 +26,13 @@ namespace Finance.API.Controllers
 
             var result = await _mediator.Send(query);
 
-            if (result is null)
-            {
-                return NotFound();
-            }
-
             return Ok(result);
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll(string search)
+        public async Task<IActionResult> GetAll(string search = "")
         {
-            var query = new GetAllPaymentTypeQuery();
+            var query = new GetAllPaymentTypeQuery(search);
 
             var result = await _mediator.Send(query);
 
