@@ -1,4 +1,6 @@
-﻿using Finance.Application.Models;
+﻿using Finance.Application.Commands.CreateExpense;
+using Finance.Application.Commands.CreateExpenseCategory;
+using Finance.Application.Models;
 using Finance.Application.Queries.GetAllExpense;
 using Finance.Application.Queries.GetExpenseById;
 using Finance.Infrastructure.Persistence;
@@ -46,14 +48,11 @@ namespace Finance.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post(CreateExpenseInputModel model)
+        public async Task<IActionResult> Post(CreateExpenseCommand command)
         {
-            var expense = model.ToEntity();
+            var result = await _mediator.Send(command);
 
-            _context.Expenses.Add(expense);
-            _context.SaveChanges();
-
-            return CreatedAtAction(nameof(GetById), new { id = 1 }, model);
+            return CreatedAtAction(nameof(GetById), new { id =  result.Data}, command);
         }
 
         [HttpDelete("{id}")]
