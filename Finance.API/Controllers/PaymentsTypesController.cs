@@ -1,7 +1,7 @@
 ﻿using Finance.Application.Commands.CreatePaymentType;
+using Finance.Application.Commands.UpdatePaymentType;
 using Finance.Application.Queries.GetAllPaymentType;
 using Finance.Application.Queries.GetPaymentTypeById;
-using Finance.Infrastructure.Persistence;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,11 +12,9 @@ namespace Finance.API.Controllers
     public class PaymentsTypesController : ControllerBase
     {
         private readonly IMediator _mediator;
-        private readonly FinanceDbContext _context;
-        public PaymentsTypesController(IMediator mediator, FinanceDbContext context)
+        public PaymentsTypesController(IMediator mediator)
         {
             _mediator = mediator;
-            _context = context;
         }
 
         [HttpGet("{id}")]
@@ -51,5 +49,19 @@ namespace Finance.API.Controllers
             
             return CreatedAtAction(nameof(GetById), new { id = result.Data }, command);
         }
+
+        [HttpPut]
+        public async Task<IActionResult> Put(int id,UpdatePaymentTypeCommand command)
+        {
+            var result = await _mediator.Send(command);
+
+            if (!result.IsSuccess)
+            {
+                return BadRequest(result.Message);
+            }
+
+            return NoContent();
+        }
+
     }
 }
