@@ -1,5 +1,7 @@
 ﻿using Finance.Application.Commands.CreateExpense;
 using Finance.Application.Commands.CreateExpenseCategory;
+using Finance.Application.Commands.DeleteExpense;
+using Finance.Application.Commands.UpdateExpense;
 using Finance.Application.Models;
 using Finance.Application.Queries.GetAllExpense;
 using Finance.Application.Queries.GetExpenseById;
@@ -58,34 +60,25 @@ namespace Finance.API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var expense = _context.Expenses.SingleOrDefault(p => p.Id == id);
+            var result = await _mediator.Send(new DeleteExpenseCommand(id));
 
-            if (expense is null)
+            if (!result.IsSuccess)
             {
-                return NotFound();
+                return NotFound(result.Message);
             }
-
-            expense.SetAsDeleted();
-            _context.Expenses.Update(expense);
-            _context.SaveChanges();
 
             return NoContent();
         }
 
         [HttpPut]
-        public async Task<IActionResult> Put(int id, UpdateExpenseInputModel model)
+        public async Task<IActionResult> Put(int id, UpdateExpenseCommand command)
         {
-            var expense = _context.Expenses.SingleOrDefault(p => p.Id == id);
+            var result = await _mediator.Send(command);
 
-            if (expense is null)
+            if (!result.IsSuccess)
             {
-                return NotFound();
+                return BadRequest(result.Message);
             }
-
-            expense.Update(model.Description, model.Amount, model.DateExpense, model.Card, model.IdUser, model.IdExpenseCategory, model.IdExpenseType, model.IdPaymentType);
-
-            _context.Expenses.Update(expense);
-            _context.SaveChanges();
 
             return NoContent();
         }
