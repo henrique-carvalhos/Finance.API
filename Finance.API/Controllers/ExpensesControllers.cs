@@ -1,14 +1,10 @@
 ﻿using Finance.Application.Commands.CreateExpense;
-using Finance.Application.Commands.CreateExpenseCategory;
 using Finance.Application.Commands.DeleteExpense;
 using Finance.Application.Commands.UpdateExpense;
-using Finance.Application.Models;
 using Finance.Application.Queries.GetAllExpense;
 using Finance.Application.Queries.GetExpenseById;
-using Finance.Infrastructure.Persistence;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace Finance.API.Controllers
 {
