@@ -2,7 +2,7 @@
 {
     public class Expense : BaseEntity
     {
-        public Expense(string description, decimal amount, DateTime dateExpense, int idUser, int idExpenseCategory, int idExpenseType)
+        public Expense(string description, decimal amount, DateTime dateExpense, int idUser, int idExpenseCategory, int idExpenseType, int idPaymentType)
             : base()
         {
             Description = description;
@@ -12,6 +12,7 @@
             IdUser = idUser;
             IdExpenseCategory = idExpenseCategory;
             IdExpenseType = idExpenseType;
+            IdPaymentType = idPaymentType;
         }
 
         public string Description { get; private set; }
@@ -27,7 +28,10 @@
         public int IdExpenseType { get; private set; }
         public ExpenseType ExpenseType { get; private set; }
 
-        public void Update(string description, decimal amount, DateTime dateExpense, int idUser, int idExpenseCategory, int idExpenseType)
+        public int IdPaymentType { get; private set; }
+        public PaymentType PaymentType { get; private set; }
+
+        public void Update(string description, decimal amount, DateTime dateExpense, int idUser, int idExpenseCategory, int idExpenseType, int idPaymentType)
         {
             Description = description;
             Amount = amount;
@@ -36,6 +40,7 @@
             IdUser = idUser;
             IdExpenseCategory = idExpenseCategory;
             IdExpenseType = idExpenseType;
+            IdPaymentType = idPaymentType;
         }
     }
 }

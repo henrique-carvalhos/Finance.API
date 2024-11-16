@@ -15,6 +15,7 @@ namespace Finance.Infrastructure.Persistence
         public DbSet<ExpenseCategory> ExpensesCategories { get; set; }
         public DbSet<ExpenseType> ExpensesTypes { get; set; }
         public DbSet<Income> Incomes { get; set; }
+        public DbSet<PaymentType> PaymentTypes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -68,6 +69,11 @@ namespace Finance.Infrastructure.Persistence
                 .WithMany()
                 .HasForeignKey(e => e.IdExpenseType);
 
+            builder.Entity<Expense>()
+                .HasOne(e => e.PaymentType)
+                .WithMany()
+                .HasForeignKey(e => e.IdPaymentType);
+
             // Configuração da entidade ExpenseCategory
             builder.Entity<ExpenseCategory>()
                 .HasKey(ec => ec.Id);
@@ -95,6 +101,16 @@ namespace Finance.Infrastructure.Persistence
                 .HasOne(et => et.ExpenseCategory)
                 .WithMany(ec => ec.ExpensesTypes)
                 .HasForeignKey(et => et.IdExpenseCategory);
+
+
+            //configuração da entidade PaymentType
+            builder.Entity<PaymentType>()
+                .HasKey (et => et.Id);
+
+            builder.Entity<PaymentType>()
+                .Property(pt => pt.Description)
+                .IsRequired()
+                .HasMaxLength(50);
         }
     }
 }
