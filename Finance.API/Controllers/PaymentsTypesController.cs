@@ -1,4 +1,5 @@
 ﻿using Finance.Application.Commands.CreatePaymentType;
+using Finance.Application.Queries.GetPaymentTypeById;
 using Finance.Infrastructure.Persistence;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -18,14 +19,34 @@ namespace Finance.API.Controllers
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetById(int id)
+        public async Task<IActionResult> GetById(int id)
         {
-            var result = _context.PaymentTypes
-                .SingleOrDefault(x => x.Id == id);
+            var query = new GetPaymentTypeByIdQuery(id);
+
+            var result = await _mediator.Send(query);
+
+            if (result is null)
+            {
+                return NotFound();
+            }
 
             return Ok(result);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetAll(string search)
+        {
+            var query = new GetAllPaymentTypeQuery();
+
+            var result = await _mediator.Send(query);
+
+            if (result is null)
+            {
+                return NotFound();
+            }
+
+            return Ok(result);
+        }
 
         [HttpPost]
         public async Task<IActionResult> Post(CreatePaymentTypeCommand command)

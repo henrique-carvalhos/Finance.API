@@ -4,7 +4,6 @@ using Finance.Application.Commands.UpdateIncome;
 using Finance.Application.Queries.GetAllIncome;
 using Finance.Application.Queries.GetIncomeById;
 using Finance.Core.Enums;
-using Finance.Infrastructure.Persistence;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
