@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Finance.API.Controllers
 {
     [ApiController]
-    [Route("api/paymentType")]
+    [Route("api/paymentsTypes")]
     public class PaymentsTypesController : ControllerBase
     {
         private readonly IMediator _mediator;
