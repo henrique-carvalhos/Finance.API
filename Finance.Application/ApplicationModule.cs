@@ -1,4 +1,7 @@
-﻿using Finance.Application.Queries.GetUserById;
+﻿using Finance.Application.Commands.CreatePaymentType;
+using Finance.Application.Queries.GetUserById;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Finance.Application
@@ -8,7 +11,8 @@ namespace Finance.Application
         public static IServiceCollection AddApplication(this IServiceCollection services)
         {
             services
-                .AddHandlers();
+                .AddHandlers()
+                .AddValidation();
 
             return services;
         }
@@ -17,6 +21,14 @@ namespace Finance.Application
         {
             services.AddMediatR(config =>
             config.RegisterServicesFromAssemblyContaining<GetUserByIdQuery>());
+
+            return services;
+        }
+
+        public static IServiceCollection AddValidation(this IServiceCollection services)
+        {
+            services.AddFluentValidationAutoValidation()
+                .AddValidatorsFromAssemblyContaining<CreatePaymentTypeCommand>();
 
             return services;
         }
