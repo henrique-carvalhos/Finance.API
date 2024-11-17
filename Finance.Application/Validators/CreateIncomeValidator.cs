@@ -16,9 +16,7 @@ namespace Finance.Application.Validators
 
             RuleFor(p => p.Amount)
                 .NotEmpty()
-                .WithMessage("Valor deve ser preenchido")
-                .Must(ValidateNumber)
-                .WithMessage("Campo só aceita valores numéricos");
+                .WithMessage("Valor deve ser preenchido");
 
             RuleFor(p => p.Date)
                 .NotEmpty()
@@ -31,13 +29,6 @@ namespace Finance.Application.Validators
             RuleFor(p => p.IdUser)
                 .NotEmpty()
                 .WithMessage("Id do usuário não foi preenchido, e é necessário na criação");
-        }
-
-        public bool ValidateNumber(decimal number)
-        {
-            var regex = new Regex(@"(?=.*[0-9])");
-
-            return regex.IsMatch(number.ToString());
         }
     }
 }
