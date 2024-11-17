@@ -1,4 +1,5 @@
-﻿using Finance.Application.Commands.CreateIncome;
+﻿using Finance.Application.Commands.CreateExpenseType;
+using Finance.Application.Commands.CreateIncome;
 using Finance.Application.Commands.CreatePaymentType;
 using Finance.Application.Models;
 using Finance.Application.Queries.GetUserById;
@@ -37,6 +38,7 @@ namespace Finance.Application
                 .AddValidatorsFromAssemblyContaining<CreatePaymentTypeCommand>();
 
             services.AddTransient<IPipelineBehavior<CreateIncomeCommand, ResultViewModel<int>>, ValidateCreateIncomeCommandBehavior>(); 
+            services.AddTransient<IPipelineBehavior<CreateExpenseTypeCommand, ResultViewModel<int>>, ValidateCreateExpenseTypeCommandBehavior>(); 
 
             return services;
         }
