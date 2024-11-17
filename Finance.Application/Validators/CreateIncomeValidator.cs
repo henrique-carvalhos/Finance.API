@@ -25,10 +25,6 @@ namespace Finance.Application.Validators
             RuleFor(p => p.IncomeType)
                 .NotEmpty()
                 .WithMessage("Tipo de receita deve ser preenchido");
-
-            RuleFor(p => p.IdUser)
-                .NotEmpty()
-                .WithMessage("Id do usuário não foi preenchido, e é necessário na criação");
         }
     }
 }
