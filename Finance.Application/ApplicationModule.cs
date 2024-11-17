@@ -1,4 +1,5 @@
-﻿using Finance.Application.Commands.CreateExpenseType;
+﻿using Finance.Application.Commands.CreateExpense;
+using Finance.Application.Commands.CreateExpenseType;
 using Finance.Application.Commands.CreateIncome;
 using Finance.Application.Commands.CreatePaymentType;
 using Finance.Application.Models;
@@ -39,6 +40,7 @@ namespace Finance.Application
 
             services.AddTransient<IPipelineBehavior<CreateIncomeCommand, ResultViewModel<int>>, ValidateCreateIncomeCommandBehavior>(); 
             services.AddTransient<IPipelineBehavior<CreateExpenseTypeCommand, ResultViewModel<int>>, ValidateCreateExpenseTypeCommandBehavior>(); 
+            services.AddTransient<IPipelineBehavior<CreateExpenseCommand, ResultViewModel<int>>, ValidateCreateExpenseCommandBehavior>(); 
 
             return services;
         }
