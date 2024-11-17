@@ -9,3 +9,4 @@
 * FluentValidation.
 * Code-First.
 * Banco de Dados SQL Server.
+* Padrão Decotator com MediatR: validação dos id's chava estrangeiras.
