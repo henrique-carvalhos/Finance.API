@@ -7,4 +7,5 @@
 * Microsoft Entity Framework Core.
 * MediatR.
 * FluentValidation.
+* Code-First.
 * Banco de Dados SQL Server.
